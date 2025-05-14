@@ -1,16 +1,21 @@
-# Use an official Java runtime as a parent image
 FROM openjdk:17-jdk-slim
 
-# Set the working directory in the container
+# Set the ANT_VERSION environment variable
+ENV ANT_VERSION=1.10.3
+
 WORKDIR /app
 
-# Copy the build files into the container
+# Copy the project files into the container
 COPY . /app
 
-# Build the application using Ant
-RUN antRUN apt-get update && apt-get install -y ant && ant -version
+# Install dependencies and Ant
+RUN apt-get update && apt-get install -y wget \
+    && wget https://downloads.apache.org/ant/binaries/apache-ant-${ANT_VERSION}-bin.tar.gz \
+    && tar -xzf apache-ant-${ANT_VERSION}-bin.tar.gz -C /opt \
+    && ln -s /opt/apache-ant-${ANT_VERSION} /opt/ant \
+    && ln -s /opt/ant/bin/ant /usr/bin/ant
 
-# Command to run the application (adjust the path to your .jar file if necessary)
+# Verify Ant installation
+RUN ant -version
+
 CMD ["java", "-jar", "dist/JavaApplication1.jar"]
-
-
