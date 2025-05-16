@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import com.sun.net.httpserver.HttpExchange;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class JavaApplication1 {
 
     public static void main(String[] args) throws IOException {
         int port = Integer.parseInt(System.getenv().getOrDefault("PORT", "8180"));
-        HttpServer server = HttpServer.create(new InetSocketAddress(0), port);
+        HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
         server.createContext("/api/hello", new HelloHandler());
         server.setExecutor(null); // default executor
         server.start();
