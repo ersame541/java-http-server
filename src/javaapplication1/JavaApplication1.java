@@ -13,7 +13,8 @@ import java.nio.charset.StandardCharsets;
 public class JavaApplication1 {
 
     public static void main(String[] args) throws IOException {
-        HttpServer server = HttpServer.create(new InetSocketAddress(8180), 0);
+        int port = Integer.parseInt(System.getenv().getOrDefault("PORT", "8180"));
+        HttpServer server = HttpServer.create(new InetSocketAddress(0), port);
         server.createContext("/api/hello", new HelloHandler());
         server.setExecutor(null); // default executor
         server.start();
